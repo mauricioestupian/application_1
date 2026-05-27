@@ -22,7 +22,7 @@ class Principal extends StatelessWidget {
 
             // Estilo del contenedor
             decoration: BoxDecoration(
-              color: Colors.blue.shade100,
+              color: const Color.fromARGB(255, 191, 199, 27),
               borderRadius: BorderRadius.circular(20),
             ),
 
