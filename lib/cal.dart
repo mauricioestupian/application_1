@@ -8,7 +8,11 @@ class Calculadora extends StatefulWidget {
 }
 
 class _CalculadoraState extends State<Calculadora> {
-  String operacion = "8+4";
+  String operacion = "";
+  String resultado = "0";
+  String numeroActual = "";
+  List<String> elementos = [];
+  List<String> calculo = [];
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class _CalculadoraState extends State<Calculadora> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      '12',
+                      resultado,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -42,6 +46,7 @@ class _CalculadoraState extends State<Calculadora> {
                 ),
               ),
             ),
+            Row(children: [boton('CA'), boton('CE'), boton('←'), boton('')]),
             Row(children: [boton('7'), boton('8'), boton('9'), boton('/')]),
             Row(children: [boton('4'), boton('5'), boton('6'), boton('*')]),
             Row(children: [boton('1'), boton('2'), boton('3'), boton('-')]),
@@ -52,9 +57,75 @@ class _CalculadoraState extends State<Calculadora> {
     );
   } //build
 
+  void actionBoton(String valor) {
+    //Primero print(valor);
+    //Luego
+    setState(() {
+      switch (valor) {
+        case 'CA':
+          operacion = "";
+          resultado = "0";
+          return;
+        case 'CE':
+          operacion = "";
+          return;
+        case '←':
+          if (operacion.isNotEmpty) {
+            operacion = operacion.substring(0, operacion.length - 1);
+          }
+          return;
+
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+          if (numeroActual.isNotEmpty) {
+            elementos.add(numeroActual);
+            elementos.add(valor);
+            numeroActual = "";
+            operacion += valor;
+          }
+          print(elementos);
+
+          break;
+
+        case "=":
+          if (numeroActual.isNotEmpty) {
+            elementos.add(numeroActual);
+            calculo.addAll(
+              elementos,
+            ); //esto es para copiar los elementos a calculo, porque luego se van a modificar
+            for (int i = 0; i < calculo.length; i++) {
+              if (calculo[i] == "*" || calculo[i] == "/") {
+                double a = double.parse(calculo[i - 1]);
+                double b = double.parse(calculo[i + 1]);
+                double r = 0;
+                if (calculo[i] == "*")
+                  r = a * b;
+                else
+                  r = a / b;
+                calculo.replaceRange(i - 1, i + 2, [r.toString()]);
+              }
+              i = 0;
+            }
+          }
+
+        default:
+          operacion += valor;
+          numeroActual += valor;
+          break;
+      }
+    });
+  }
+
   Widget boton(String texto) {
     return Expanded(
-      child: ElevatedButton(onPressed: () {}, child: Text(texto)),
+      child: ElevatedButton(
+        onPressed: () {
+          actionBoton(texto);
+        },
+        child: Text(texto),
+      ),
     );
   }
 }
