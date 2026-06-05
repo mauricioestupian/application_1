@@ -65,6 +65,8 @@ class _CalculadoraState extends State<Calculadora> {
         case 'CA':
           operacion = "";
           resultado = "0";
+          numeroActual = "";
+          elementos.clear();
           return;
         case 'CE':
           operacion = "";
@@ -92,23 +94,60 @@ class _CalculadoraState extends State<Calculadora> {
         case "=":
           if (numeroActual.isNotEmpty) {
             elementos.add(numeroActual);
-            calculo.addAll(
-              elementos,
-            ); //esto es para copiar los elementos a calculo, porque luego se van a modificar
+          }
+
+          calculo = List.from(elementos);
+          bool hayOperadores = true;
+
+          while (hayOperadores) {
+            hayOperadores = false;
+
             for (int i = 0; i < calculo.length; i++) {
               if (calculo[i] == "*" || calculo[i] == "/") {
                 double a = double.parse(calculo[i - 1]);
                 double b = double.parse(calculo[i + 1]);
+
                 double r = 0;
-                if (calculo[i] == "*")
+
+                if (calculo[i] == "*") {
                   r = a * b;
-                else
+                } else {
                   r = a / b;
+                }
+
                 calculo.replaceRange(i - 1, i + 2, [r.toString()]);
+
+                hayOperadores = true;
+
+                break;
               }
-              i = 0;
             }
           }
+
+          double total = double.parse(calculo[0]);
+          for (int i = 1; i < calculo.length; i += 2) {
+            String operador = calculo[i];
+
+            double numero = double.parse(calculo[i + 1]);
+
+            switch (operador) {
+              case "+":
+                total += numero;
+                break;
+
+              case "-":
+                total -= numero;
+                break;
+            }
+          }
+
+          resultado = total.toString();
+
+          elementos.clear();
+
+          numeroActual = resultado;
+
+          break;
 
         default:
           operacion += valor;
