@@ -47,10 +47,10 @@ class _CalculadoraState extends State<Calculadora> {
               ),
             ),
             Row(children: [boton('CA'), boton('CE'), boton('←'), boton('')]),
-            Row(children: [boton('7'), boton('8'), boton('9'), boton('/')]),
-            Row(children: [boton('4'), boton('5'), boton('6'), boton('*')]),
-            Row(children: [boton('1'), boton('2'), boton('3'), boton('-')]),
-            Row(children: [boton('0'), boton('.'), boton('='), boton('+')]),
+            Row(children: [boton('7'), boton('8'), boton('9'), boton2('/')]),
+            Row(children: [boton('4'), boton('5'), boton('6'), boton2('*')]),
+            Row(children: [boton('1'), boton('2'), boton('3'), boton2('-')]),
+            Row(children: [boton('0'), boton('.'), boton2('='), boton2('+')]),
           ],
         ),
       ),
@@ -163,6 +163,37 @@ class _CalculadoraState extends State<Calculadora> {
         onPressed: () {
           actionBoton(texto);
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 61, 61, 59),
+
+          foregroundColor: Colors.white,
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+
+        child: Text(texto),
+      ),
+    );
+  }
+
+  Widget boton2(String texto) {
+    return Expanded(
+      child: ElevatedButton(
+        onPressed: () {
+          actionBoton(texto);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color.fromARGB(255, 232, 203, 21),
+
+          foregroundColor: Colors.white,
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+
         child: Text(texto),
       ),
     );
