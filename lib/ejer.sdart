@@ -5,3 +5,8 @@ class ____ {
    widget(){}
 
 }
+
+
+flutter clean
+flutter pub get
+flutter run

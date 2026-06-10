@@ -1,3 +1,4 @@
+import 'package:application_1/fomulario.dart';
 import 'package:flutter/material.dart';
 
 // Widget principal del Login
@@ -180,6 +181,28 @@ class _LoginState extends State<Login> {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 15),
+
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+
+                            MaterialPageRoute(
+                              builder: (context) => const Registro(),
+                            ),
+                          );
+                        },
+
+                        child: const Text(
+                          "¿No tienes cuenta? Regístrate",
+                          style: TextStyle(
+                            color: Color(0xFF00A86B),
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
