@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:application_1/fomulario.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+import 'home.dart';
 
 // Widget principal del Login
 class Login extends StatefulWidget {
@@ -19,6 +24,8 @@ class _LoginState extends State<Login> {
 
   // Variable que controla si la contraseñase muestra o se oculta
   bool ocultarPassword = true;
+
+  bool cargando = false;
 
   @override
   Widget build(BuildContext context) {
@@ -160,11 +167,7 @@ class _LoginState extends State<Login> {
                         height: 55,
 
                         child: ElevatedButton(
-                          onPressed: () {
-                            print("Usuario: ${usuarioController.text}");
-
-                            print("Password: ${passwordController.text}");
-                          },
+                          onPressed: cargando ? null : login,
 
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF00A86B),
@@ -174,17 +177,20 @@ class _LoginState extends State<Login> {
                             ),
                           ),
 
-                          child: const Text(
-                            "INGRESAR",
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          child: cargando
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : const Text(
+                                  "INGRESAR",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
                         ),
                       ),
-
                       const SizedBox(height: 15),
 
                       TextButton(
@@ -225,5 +231,47 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  Future<void> login() async {
+    setState(() {
+      cargando = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse("http://127.0.0.1:8080/auth/login"),
+
+        headers: {"Content-Type": "application/json"},
+
+        body: jsonEncode({
+          "usuario": usuarioController.text,
+          "password": passwordController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        Map<String, dynamic> datos = jsonDecode(response.body);
+
+        print(datos);
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Usuario o contraseña incorrectos")),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: $e")));
+    }
+
+    setState(() {
+      cargando = false;
+    });
   }
 }
