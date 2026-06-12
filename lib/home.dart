@@ -58,6 +58,11 @@ class Home extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) => const Login()),
                 );
+
+                /*Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Login()),
+                );*/
               }
             },
           ),

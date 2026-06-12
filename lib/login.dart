@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:application_1/fomulario.dart';
+import 'package:application_1/formulario.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -252,8 +252,10 @@ class _LoginState extends State<Login> {
 
       if (response.statusCode == 200) {
         Map<String, dynamic> datos = jsonDecode(response.body);
-
-        print(datos);
+        String nombre = datos['nombreCompleto'];
+        String Token = datos['token'];
+        print("Nombre: $nombre");
+        print("Token: $Token");
 
         Navigator.pushReplacement(
           context,
