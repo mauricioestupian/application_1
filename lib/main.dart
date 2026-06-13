@@ -1,8 +1,6 @@
-import 'package:application_1/formulario.dart';
+import 'package:application_1/login.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
-    const MaterialApp(debugShowCheckedModeBanner: false, home: Registro()),
-  );
+  runApp(const MaterialApp(debugShowCheckedModeBanner: false, home: Login()));
 }
